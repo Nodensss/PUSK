@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Алгоритм пуска УПЭ</title>
+  </head>
+  <body>
+    <script>
+      const known = ["checklist", "view", "trainer", "start"];
+      const segments = location.pathname.split("/").filter(Boolean);
+      const index = segments.findIndex((segment) => known.includes(segment));
+      const route = index >= 0 ? `/${segments.slice(index).join("/")}` : "/";
+      const marker = index >= 0 ? `/${segments[index]}` : "";
+      const base = marker ? location.pathname.slice(0, location.pathname.indexOf(marker) + 1) : "./";
+      location.replace(`${base}#${route}${location.search}`);
+    </script>
+  </body>
+</html>
