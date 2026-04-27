@@ -5,7 +5,7 @@ const ALGORITHM = {
   subtitle: "12 этапов · 03.2026",
   accent: "#f5a623",
   icon: "▶",
-  dataUrl: "/data/start-algorithm.json",
+  dataUrl: "data/start-algorithm.json",
 };
 
 const app = document.querySelector("#app");
@@ -434,5 +434,7 @@ function currentPath() {
     return location.hash.slice(1).replace(/\/+$/, "") || "/";
   }
   if (location.protocol === "file:") return "/";
-  return location.pathname.replace(/\/+$/, "") || "/";
+  const path = location.pathname.replace(/\/+$/, "") || "/";
+  const known = ["/checklist", "/view", "/view/critical-rules", "/trainer", "/trainer/history", "/start"];
+  return known.includes(path) ? path : "/";
 }
