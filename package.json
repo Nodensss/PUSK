@@ -1,0 +1,10 @@
+{
+  "name": "upe-start-algorithm",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static mobile-ready checklist and trainer for UPE start algorithm.",
+  "scripts": {
+    "start": "node server.js",
+    "serve": "node server.js"
+  }
+}
