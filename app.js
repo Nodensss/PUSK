@@ -360,8 +360,10 @@ function renderAppendix(data) {
   return `
     <section class="panel">
       <h2>${escapeHtml(data.appendix.title || "Приложение")}</h2>
+      ${data.appendix.description ? `<p class="desc">${escapeHtml(data.appendix.description)}</p>` : ""}
       ${rows.length ? `
         <table>
+          ${data.appendix.columns ? `<thead><tr>${data.appendix.columns.map((col) => `<th>${escapeHtml(col)}</th>`).join("")}</tr></thead>` : ""}
           <tbody>
             ${rows.map((row) => `<tr>${Object.values(row).map((cell) => `<td>${escapeHtml(String(cell))}</td>`).join("")}</tr>`).join("")}
           </tbody>
