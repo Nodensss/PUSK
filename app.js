@@ -16,6 +16,7 @@ const state = {
   questionIndex: 0,
   trainerAnswers: [],
   lockedAnswer: null,
+  openInfo: new Set(),
 };
 
 init();
@@ -29,7 +30,20 @@ async function init() {
   window.addEventListener("popstate", render);
   window.addEventListener("hashchange", render);
   document.addEventListener("click", onNavigate);
+  document.addEventListener("click", onToggleInfo);
   render();
+}
+
+function onToggleInfo(event) {
+  const button = event.target.closest("[data-info]");
+  if (!button) return;
+  const id = button.dataset.info;
+  const open = !state.openInfo.has(id);
+  if (open) state.openInfo.add(id);
+  else state.openInfo.delete(id);
+  button.setAttribute("aria-expanded", open);
+  button.querySelector(".info-mark").textContent = open ? "−" : "?";
+  button.parentElement.querySelector(".check-info").hidden = !open;
 }
 
 async function loadAlgorithm(meta) {
@@ -156,6 +170,7 @@ function renderChecklist() {
         <div class="progress-track"><div class="progress-fill" style="--progress:${allChecks.length ? (done / allChecks.length) * 100 : 0}%"></div></div>
       </div>
     </div>
+    <p class="info-hint">Нажмите на пункт, чтобы увидеть пояснение: что это и зачем. Пояснения справочные и не заменяют регламент и ТКП.</p>
     ${renderPhases(kind, phases, true)}
   `, "checklist");
 
@@ -188,6 +203,7 @@ function renderView() {
     <div class="header-actions">
       <a class="primary" href="#/view/critical-rules" data-link>⚠ Критические правила</a>
     </div>
+    <p class="info-hint">Нажмите на пункт, чтобы увидеть пояснение: что это и зачем. Пояснения справочные и не заменяют регламент и ТКП.</p>
     ${renderPhases(kind, data.phases, false)}
     ${renderSpecial(data)}
     ${renderAppendix(data)}
@@ -318,12 +334,21 @@ function renderPhases(kind, phases, interactive) {
           <div class="checks">
             ${phase.checks.map((check) => {
               const id = `${phase.id}:${check.id}`;
+              const open = state.openInfo.has(id);
+              const body = `
+                <span class="check-text">${escapeHtml(check.text)}</span>
+                ${check.param ? `<span class="param">${escapeHtml(check.param)}</span>` : ""}
+              `;
               return `
-                <label class="check-row">
-                  ${interactive ? `<input type="checkbox" data-check="${id}" ${checked[id] ? "checked" : ""}>` : `<span class="muted">${escapeHtml(check.id)}</span>`}
-                  <span>${escapeHtml(check.text)}</span>
-                  ${check.param ? `<span class="param">${escapeHtml(check.param)}</span>` : ""}
-                </label>
+                <div class="check-row">
+                  ${interactive
+                    ? `<label class="check-box"><input type="checkbox" data-check="${id}" ${checked[id] ? "checked" : ""}></label>`
+                    : `<span class="check-id muted">${escapeHtml(check.id)}</span>`}
+                  ${check.info
+                    ? `<button type="button" class="check-main" data-info="${id}" aria-expanded="${open}">${body}<span class="info-mark" aria-hidden="true">${open ? "−" : "?"}</span></button>`
+                    : `<div class="check-main">${body}</div>`}
+                  ${check.info ? `<div class="check-info" ${open ? "" : "hidden"}>${escapeHtml(check.info)}</div>` : ""}
+                </div>
               `;
             }).join("")}
           </div>
@@ -381,7 +406,7 @@ function filterPhases(phases, query) {
     phase.subtitle,
     phase.section,
     ...(phase.positions || []),
-    ...phase.checks.map((check) => `${check.text} ${check.param || ""}`),
+    ...phase.checks.map((check) => `${check.text} ${check.param || ""} ${check.info || ""}`),
   ].join(" ").toLowerCase().includes(text));
 }
 

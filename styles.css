@@ -349,7 +349,7 @@ p {
 
 .check-row {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr;
   gap: 10px;
   align-items: start;
   padding: 10px;
@@ -361,6 +361,65 @@ p {
   width: 19px;
   height: 19px;
   accent-color: var(--accent);
+}
+
+.check-box {
+  display: flex;
+  margin: -10px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.check-main {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 10px;
+  align-items: start;
+  min-width: 0;
+}
+
+button.check-main {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.info-mark {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+button.check-main[aria-expanded="true"] .info-mark {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.check-info {
+  grid-column: 1 / -1;
+  padding: 10px 12px;
+  border-left: 3px solid var(--steel);
+  border-radius: 0 8px 8px 0;
+  background: color-mix(in srgb, var(--steel) 10%, transparent);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.info-hint {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 14px;
 }
 
 .param {
@@ -486,12 +545,17 @@ td {
     min-height: 330px;
   }
 
-  .check-row {
-    grid-template-columns: auto 1fr;
+  .check-main {
+    grid-template-columns: 1fr auto;
   }
 
   .param {
-    grid-column: 2;
+    grid-column: 1;
     white-space: normal;
+  }
+
+  .info-mark {
+    grid-column: 2;
+    grid-row: 1;
   }
 }

@@ -1,4 +1,4 @@
-const CACHE_NAME = "upe-start-v2";
+const CACHE_NAME = "upe-start-v3";
 const ASSETS = [
   "./",
   "index.html",
