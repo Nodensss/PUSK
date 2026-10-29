@@ -25,3 +25,25 @@ powershell -ExecutionPolicy Bypass -File .\server.ps1
 Для Netlify уже добавлены `_redirects` и `netlify.toml`.
 
 Для Vercel уже добавлен `vercel.json`.
+
+## Android-приложение
+
+В папке `android/` лежит нативное Android-приложение (WebView), которое показывает эту же веб-версию и работает полностью офлайн. Файлы `index.html`, `styles.css`, `app.js`, `data/` копируются в APK автоматически при каждой сборке, так что править нужно только веб-версию.
+
+### Скачать готовый APK
+
+При каждом пуше GitHub Actions собирает APK: вкладка **Actions** → workflow **Android APK** → последний запуск → артефакт `pusk-upe-apk`. Для тега вида `v1.0.0` APK также прикладывается к релизу.
+
+На телефоне разрешите установку из неизвестных источников и откройте `pusk-upe.apk`.
+
+### Собрать локально
+
+Нужны JDK 17+ и Android SDK (проще всего — Android Studio: File → Open → папка `android`).
+
+```bash
+cd android
+./gradlew assembleRelease
+# APK: android/app/build/outputs/apk/release/app-release.apk
+```
+
+Release-сборка подписана debug-ключом, чтобы её можно было сразу установить. Для публикации в Google Play настройте собственный ключ подписи в `android/app/build.gradle` и увеличивайте `versionCode` при каждом обновлении.

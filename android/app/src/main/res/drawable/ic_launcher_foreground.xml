@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Перенесено из icon.svg: круг с кнопкой «пуск» и полосой, вписано в безопасную зону 72dp. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+    <group
+        android:pivotX="256"
+        android:pivotY="256"
+        android:scaleX="0.66"
+        android:scaleY="0.66">
+        <path
+            android:fillColor="#191F28"
+            android:strokeColor="#F5A623"
+            android:strokeWidth="22"
+            android:pathData="M256,88a168,168 0,1 1,0 336a168,168 0,1 1,0 -336z" />
+        <path
+            android:fillColor="#F5A623"
+            android:pathData="M218,158v196l150,-98z" />
+        <path
+            android:strokeColor="#F5A623"
+            android:strokeAlpha="0.55"
+            android:strokeWidth="24"
+            android:strokeLineCap="round"
+            android:pathData="M120,400h272" />
+    </group>
+</vector>

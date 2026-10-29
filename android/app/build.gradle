@@ -1,0 +1,49 @@
+plugins {
+    id "com.android.application"
+}
+
+android {
+    namespace "ru.pusk.upe"
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "ru.pusk.upe"
+        minSdk 24
+        targetSdk 35
+        versionCode 1
+        versionName "1.0.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            // Подписываем debug-ключом, чтобы release-APK можно было сразу установить.
+            // Для Google Play замените на собственный signingConfig.
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    sourceSets {
+        main.assets.srcDirs += layout.buildDirectory.dir("generated/webAssets")
+    }
+}
+
+// Веб-приложение из корня репозитория копируется в assets/www при каждой сборке,
+// поэтому Android-версия всегда совпадает с веб-версией.
+def copyWebAssets = tasks.register("copyWebAssets", Copy) {
+    from(rootProject.file("..")) {
+        include "index.html", "styles.css", "app.js", "icon.svg", "manifest.webmanifest", "data/**"
+    }
+    into layout.buildDirectory.dir("generated/webAssets/www")
+}
+
+tasks.named("preBuild") { dependsOn copyWebAssets }
+
+dependencies {
+    implementation "androidx.webkit:webkit:1.12.1"
+}
